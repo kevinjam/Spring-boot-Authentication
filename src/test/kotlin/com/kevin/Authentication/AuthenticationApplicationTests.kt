@@ -1,4 +1,4 @@
-package com.kevinjanvier.springsecuritydemo
+package com.kevin.Authentication
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -7,10 +7,10 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
-class SpringsecuritydemoApplicationTests {
+class AuthenticationApplicationTests {
 
-    @Test
-    fun contextLoads() {
-    }
+	@Test
+	fun contextLoads() {
+	}
 
 }

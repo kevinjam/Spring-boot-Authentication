@@ -1,12 +1,11 @@
-package com.kevinjanvier.springsecuritydemo
+package com.kevin.Authentication
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class SpringsecuritydemoApplication
+class AuthenticationApplication
 
 fun main(args: Array<String>) {
-    runApplication<SpringsecuritydemoApplication>(*args)
+	runApplication<AuthenticationApplication>(*args)
 }
-

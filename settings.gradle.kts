@@ -1,1 +1,1 @@
-rootProject.name = "springsecuritydemo"
+rootProject.name = "Authentication"
