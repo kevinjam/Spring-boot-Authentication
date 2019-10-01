@@ -1,17 +1,19 @@
 package com.kevin.Authentication.controller
 
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 
 @Controller
 class MainController {
 
-    @GetMapping("/hello")
-    fun hello() = "hello.html"
 
-    @GetMapping("/main")
-    fun main()= "main.html"
+    @GetMapping("/")
+    fun home(user:OAuth2AuthenticationToken):String{
 
-    @GetMapping("/admin")
-    fun admin()= "admin.html"
+        println("UserDetails From Git $user")
+        return "home.html"
+    }
+
+
 }

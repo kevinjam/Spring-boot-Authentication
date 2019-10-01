@@ -1,51 +1,36 @@
 package com.kevin.Authentication.config
 
-import org.springframework.boot.autoconfigure.security.SecurityProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.core.userdetails.User
-import org.springframework.security.crypto.password.NoOpPasswordEncoder
-import org.springframework.security.provisioning.InMemoryUserDetailsManager
-import org.springframework.security.provisioning.UserDetailsManager
+import org.springframework.security.config.oauth2.client.CommonOAuth2Provider
+import org.springframework.security.oauth2.client.registration.ClientRegistration
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository
 
 @Configuration
 class ProjectConfig : WebSecurityConfigurerAdapter() {
 
-    @Bean
-    fun passwordEncode() = NoOpPasswordEncoder.getInstance()
 
     @Bean
-    fun userDetailManager():UserDetailsManager{
-        val manager = InMemoryUserDetailsManager()
-        val user = User.withUsername("admin")
-                .password("12345")
-                .authorities("ADMIN")
-                .build()
-
-
-        val user2 = User.withUsername("bill")
-                .password("12345")
-                .authorities("USER")
-                .build()
-        manager.createUser(user)
-        manager.createUser(user2)
-        return manager
+    fun clientRegistrationRepository():ClientRegistrationRepository {
+        val c = clientReg()
+        return  InMemoryClientRegistrationRepository(c)
     }
 
+
     override fun configure(http: HttpSecurity?) {
-        http!!.formLogin()
-                .defaultSuccessUrl("/hello", true)
-
+        http!!.oauth2Login()
         http.authorizeRequests()
-                .mvcMatchers("/admin")
-                .access("hasAnyAuthority('ADMIN')")
-                .mvcMatchers("/main").permitAll()
                 .anyRequest().authenticated()
+    }
 
-
-
+    private fun  clientReg():ClientRegistration{
+        return CommonOAuth2Provider.GITHUB.getBuilder("github")
+                .clientId("Iv1.164d571d6b996fa4")
+                .clientSecret("26383db128fcd4c1f305c84462a248e1fa31241f")
+                .build()
 
     }
 }
