@@ -10,10 +10,8 @@ class MainController {
 
     @GetMapping("/")
     fun home(user:OAuth2AuthenticationToken):String{
-
         println("UserDetails From Git $user")
-        return "home.html"
-    }
+        return "home.html"}
 
 
 }
