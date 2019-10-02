@@ -1,36 +1,41 @@
 package com.kevin.Authentication.config
 
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.config.oauth2.client.CommonOAuth2Provider
-import org.springframework.security.oauth2.client.registration.ClientRegistration
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository
-import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository
+import org.springframework.security.crypto.password.NoOpPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.provisioning.JdbcUserDetailsManager
+import org.springframework.security.provisioning.UserDetailsManager
+import javax.sql.DataSource
 
 @Configuration
-class ProjectConfig : WebSecurityConfigurerAdapter() {
+class ProjectConfig :WebSecurityConfigurerAdapter(){
 
+
+//    @Autowired
+//    private lateinit var datasource: DataSource
 
     @Bean
-    fun clientRegistrationRepository():ClientRegistrationRepository {
-        val c = clientReg()
-        return  InMemoryClientRegistrationRepository(c)
+    fun passwordEncode() = NoOpPasswordEncoder.getInstance()
+
+    //password and username
+    @Bean
+    fun userDetailsManager(dataSource: DataSource):UserDetailsManager{
+        //persite the user into the db
+        val manager = JdbcUserDetailsManager(dataSource)
+
+
+        return manager
+
     }
 
 
     override fun configure(http: HttpSecurity?) {
-        http!!.oauth2Login()
-        http.authorizeRequests()
-                .anyRequest().authenticated()
+        http!!.formLogin()
+        http.authorizeRequests().anyRequest().authenticated()
     }
 
-    private fun  clientReg():ClientRegistration{
-        return CommonOAuth2Provider.GITHUB.getBuilder("github")
-                .clientId("Iv1.164d571d6b996fa4")
-                .clientSecret("26383db128fcd4c1f305c84462a248e1fa31241f")
-                .build()
-
-    }
 }
